@@ -632,3 +632,16 @@ class Octavia(service.Service):
             check_interval=(
                 CONF.openstack.octavia_create_loadbalancer_poll_interval)
         )
+
+    @atomic.action_timer("octavia.wait_for_listeners")
+    def wait_for_listener_prov_status(self, listener, prov_status="ACTIVE"):
+        return utils.wait_for_status(
+            listener,
+            ready_statuses=[prov_status],
+            status_attr="provisioning_status",
+            update_resource=lambda listener: self.listener_show(
+                listener["id"]),
+            timeout=CONF.openstack.octavia_create_listener_timeout,
+            check_interval=(
+                CONF.openstack.octavia_create_listener_poll_interval)
+        )

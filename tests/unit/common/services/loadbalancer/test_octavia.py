@@ -460,3 +460,15 @@ class LoadBalancerServiceTestCase(test.TestCase):
         self.assertTrue(mock_wait_for_status.called)
         self._test_atomic_action_timer(self.atomic_actions(),
                                        "octavia.wait_for_loadbalancers")
+
+    @mock.patch("%s.octavia.utils.wait_for_status" % BASE_PATH)
+    def test_wait_for_listener_prov_status(self, mock_wait_for_status):
+        fake_listener = {"id": "fake_id"}
+        octavia.Octavia(mock.MagicMock()).wait_for_listener_prov_status(
+            listener=fake_listener, prov_status="foo_status")
+        self.assertEqual(mock_wait_for_status.call_count, 1)
+        self.assertEqual(
+            mock_wait_for_status.call_args[0], (fake_listener, ))
+        self.assertEqual(
+            mock_wait_for_status.call_args[1]['ready_statuses'],
+            ['foo_status'])

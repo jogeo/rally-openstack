@@ -24,5 +24,11 @@ OPTS = {"openstack": [
                  help="Octavia delete loadbalancer timeout"),
     cfg.FloatOpt("octavia_create_loadbalancer_poll_interval",
                  default=float(2.0),
-                 help="Octavia create loadbalancer poll interval")
+                 help="Octavia create loadbalancer poll interval"),
+    cfg.FloatOpt("octavia_create_listener_timeout",
+                 default=float(500.0),
+                 help="Octavia create listener timeout"),
+    cfg.FloatOpt("octavia_create_listener_poll_interval",
+                 default=float(2.0),
+                 help="Octavia create listener poll interval"),
 ]}
